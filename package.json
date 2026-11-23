@@ -1,7 +1,7 @@
 {
-  "name": "arpeggio-framer-clone",
+  "name": "lotus-specialty-pharmacy",
   "version": "1.0.0",
-  "description": "100% exact clone of Arpeggio Agency & Portfolio Framer Template with full offline assets and animations",
+  "description": "Lotus Specialty Pharmacy Website",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

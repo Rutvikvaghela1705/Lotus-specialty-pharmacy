@@ -26972,7 +26972,7 @@ Values:
 
   // arpeggio-assets/sites/EkfVtDpGRyOLbm2HsLyR4/siteMetadata.Zc7437CU.mjs
   function t5(e2, t13) {
-    return { description: `Arpeggio is a premium Framer template built to turn your portfolio into a client conversion tool. Designed for agencies and studios, it drives results through strategic layouts, clear storytelling, and slick design. Backed by lifetime support.`, favicon: `./assets/images/fav-icon.png`, robots: `max-image-preview:large`, socialImage: `https://framerusercontent.com/assets/2ZAzenwmK1BGHzmSkbYRVwbwSI.jpg`, title: `Arpeggio Agency & Portfolio Template` };
+    return { description: `Dedicated clinical care, custom compounding, free home delivery, and personalized healthcare solutions at Lotus Specialty Pharmacy.`, favicon: `./assets/images/fav-icon.png`, robots: `max-image-preview:large`, socialImage: `https://rutvikvaghela1705.github.io/Lotus-specialty-pharmacy/assets/images/header-logo.png`, title: `Lotus Specialty Pharmacy | Compassionate Care & Custom Compounding` };
   }
   function n6() {
     return (n6 = t((() => {
@@ -45476,7 +45476,7 @@ Values:
   async function U23({ routeId: e2, pathVariables: n14, canonicalPathVariables: r10, localeId: i10, collectionItemId: u7, contentLocaleId: p6, shouldResolveInitialRouteContentState: m6 = false }) {
     let g6 = K24[e2].page.preload();
     uC({ checkServerSideRouter: true, disableCustomCode: false, disableHoverOnMobile: false, editorBarDisableFrameAncestorsSecurity: false, motionDivToDiv: false, onPageRichTextBlockSelection: true, scrollRestoration: true, synchronousNavigationOnDesktop: false, yieldOnTap: false }), Ad3(X26);
-    let _6 = Pe(Gp, { isWebsite: true, environment: `site`, routeId: e2, pathVariables: n14, canonicalPathVariables: r10, routes: K24, collectionUtils: J26, serverDatabaseClient: Y26, framerSiteId: X26, notFoundPage: rn3(() => Promise.resolve().then(() => (init_QDGZ57knpK7IpgB5n3yxq_ruA74LN9L0l31GSFYLDfA_DRMmL2Ez(), QDGZ57knpK7IpgB5n3yxq_ruA74LN9L0l31GSFYLDfA_DRMmL2Ez_exports))), isReducedMotion: void 0, localeId: i10, locales: q24, preserveQueryParams: true, siteCanonicalURL: `https://arpeggio.framer.website`, EditorBar: r === void 0 ? void 0 : (() => {
+    let _6 = Pe(Gp, { isWebsite: true, environment: `site`, routeId: e2, pathVariables: n14, canonicalPathVariables: r10, routes: K24, collectionUtils: J26, serverDatabaseClient: Y26, framerSiteId: X26, notFoundPage: rn3(() => Promise.resolve().then(() => (init_QDGZ57knpK7IpgB5n3yxq_ruA74LN9L0l31GSFYLDfA_DRMmL2Ez(), QDGZ57knpK7IpgB5n3yxq_ruA74LN9L0l31GSFYLDfA_DRMmL2Ez_exports))), isReducedMotion: void 0, localeId: i10, locales: q24, preserveQueryParams: true, siteCanonicalURL: `https://rutvikvaghela1705.github.io/Lotus-specialty-pharmacy/`, EditorBar: r === void 0 ? void 0 : (() => {
       if (Q22) console.log(`[Framer On-Page Editing] Unavailable because navigator is bot`);
       else return rn3(async () => {
         r.__framer_editorBarDependencies = { __version: 3, framer: { useCurrentRoute: xn3, useLocaleInfo: Hr3, useRouter: yn3 }, react: { createElement: Pe, Fragment: Te, memo: Be, useCallback: Ue, useEffect: qe, useRef: et, useState: tt, useLayoutEffect: Ze }, "react-dom": { createPortal: _p } };
