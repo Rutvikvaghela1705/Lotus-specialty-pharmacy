@@ -277,13 +277,83 @@
     }
 
 
-    /* Left side status text ONLY in OPEN overlay menu */
+    /* Left side status text ONLY in OPEN overlay menu: strictly 3 lines, pure white */
     nav[data-framer-name*="Open"] .framer-1dopbv8,
     nav[data-framer-name*="Open"] .framer-n6q4up,
-    nav[data-framer-name*="Open"] [data-framer-name="Status"] {
+    nav[data-framer-name*="Open"] [data-framer-name="Status"],
+    nav[data-framer-name*="Open"] .framer-n6q4up *,
+    nav[data-framer-name*="Open"] [data-framer-name="Status"] * {
       display: flex !important;
       visibility: visible !important;
       opacity: 1 !important;
+      color: #ffffff !important;
+      --extracted-1w3ko1f: #ffffff !important;
+      --extracted-r6o4lv: #ffffff !important;
+      --framer-text-color: #ffffff !important;
+    }
+    nav[data-framer-name*="Open"] .framer-n6q4up p {
+      font-size: clamp(34px, 3.4vw, 48px) !important;
+      line-height: 1.22 !important;
+      letter-spacing: -0.02em !important;
+      max-width: 650px !important;
+      white-space: normal !important;
+      font-weight: 500 !important;
+    }
+
+    /* Right side main menu items vertical spacing */
+    nav[data-framer-name*="Open"] .framer-tkgwo7 {
+      height: auto !important;
+      min-height: 580px !important;
+      justify-content: flex-start !important;
+      align-items: flex-end !important;
+      padding-top: 10px !important;
+    }
+    nav[data-framer-name*="Open"] .framer-tkgwo7 > div:not(.lotus-submenu-container) {
+      margin-bottom: 22px !important;
+      height: auto !important;
+      cursor: pointer !important;
+    }
+
+    /* Submenu container (right aligned to match main menu typography) */
+    .lotus-submenu-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+      padding-right: 6px;
+      margin-top: -10px;
+      margin-bottom: 22px;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin 0.3s ease;
+    }
+    .lotus-submenu-container.is-open {
+      max-height: 350px;
+      opacity: 1;
+    }
+    .lotus-sub-item {
+      display: inline-flex;
+      align-items: center;
+      font-size: 22px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.78);
+      text-decoration: none;
+      padding: 2px 0;
+      cursor: pointer;
+      transition: color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+      text-align: right;
+    }
+    .lotus-sub-item:hover {
+      color: #00D26A !important;
+      transform: translateX(-6px);
+      opacity: 1;
+    }
+    .lotus-sub-item span.bullet {
+      color: #00D26A;
+      margin-left: 8px;
+      font-size: 14px;
+      opacity: 0.8;
     }
 
     /* When menu is closed: hide status text completely */
@@ -1716,19 +1786,31 @@ html.lenis body {
  })();</script>
 
   <script>
-    // Lotus Single Page Guard: Prevent all external and multi-page routing
+    // Lotus Single Page Guard & Overlay Menu Controller
     (function() {
-      // 1. Monkey-patch History API so client routers cannot change page away from /
+      // Helper to close Framer menu
+      function closeLotusMenu() {
+        const btn = document.querySelector('.framer-qqdj14-container button');
+        if (!btn) return;
+        const r = btn.getBoundingClientRect();
+        const evtOpts = {
+          bubbles: true, cancelable: true, composed: true, view: window, pointerId: 1, pointerType: 'mouse', isPrimary: true,
+          clientX: r.x + r.width / 2, clientY: r.y + r.height / 2, screenX: r.x + r.width / 2, screenY: r.y + r.height / 2, button: 0, buttons: 1
+        };
+        btn.dispatchEvent(new PointerEvent('pointerdown', evtOpts));
+        evtOpts.buttons = 0;
+        btn.dispatchEvent(new PointerEvent('pointerup', evtOpts));
+        btn.dispatchEvent(new MouseEvent('click', evtOpts));
+      }
+
+      // 1. Monkey-patch History API
       const originalPushState = history.pushState;
       const originalReplaceState = history.replaceState;
 
       history.pushState = function(state, title, url) {
         if (url && typeof url === 'string') {
           const cleanUrl = url.replace(/^[a-z]+:\/\/[^/]+/i, '');
-          if (cleanUrl !== '/' && !cleanUrl.startsWith('/#') && !cleanUrl.startsWith('#')) {
-            // Keep on home
-            return;
-          }
+          if (cleanUrl !== '/' && !cleanUrl.startsWith('/#') && !cleanUrl.startsWith('#')) return;
         }
         return originalPushState.apply(this, arguments);
       };
@@ -1736,28 +1818,32 @@ html.lenis body {
       history.replaceState = function(state, title, url) {
         if (url && typeof url === 'string') {
           const cleanUrl = url.replace(/^[a-z]+:\/\/[^/]+/i, '');
-          if (cleanUrl !== '/' && !cleanUrl.startsWith('/#') && !cleanUrl.startsWith('#')) {
-            return;
-          }
+          if (cleanUrl !== '/' && !cleanUrl.startsWith('/#') && !cleanUrl.startsWith('#')) return;
         }
         return originalReplaceState.apply(this, arguments);
       };
 
-      // 2. Capture-phase Click Interceptor: Intercept every link click before router
+      // 2. Global Capture-phase Click Interceptor
       document.addEventListener('click', function(e) {
         const anchor = e.target.closest('a');
         if (!anchor) return;
 
-        const href = anchor.getAttribute('href') || '';
-        
-        // Allow telephone click for phone calls
-        if (href.startsWith('tel:')) {
+        // Skip Accordion headers so accordion click handler processes them
+        if (anchor.closest('.framer-1km2yib') || anchor.closest('.framer-1f1nyzy')) {
           return;
         }
 
-        // Prevent navigation for all other links
+        const href = anchor.getAttribute('href') || '';
+        if (href.startsWith('tel:')) return;
+
         e.preventDefault();
         e.stopPropagation();
+
+        // If inside open overlay menu, close the overlay!
+        const openNav = document.querySelector('nav[data-framer-name*="Open"]');
+        if (openNav && (anchor.closest('nav[data-framer-name*="Open"]') || anchor.classList.contains('lotus-sub-item'))) {
+          closeLotusMenu();
+        }
 
         const lowerHref = href.toLowerCase();
 
@@ -1776,16 +1862,128 @@ html.lenis body {
           const el = document.getElementById('client-stories') || document.querySelector('[data-framer-name="Client Stories"]');
           if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } else if (lowerHref.includes('contact') || lowerHref.includes('call') || lowerHref.includes('whatsapp') || lowerHref.includes('transfer') || lowerHref.includes('refill')) {
-          // Scroll to CTA or footer contact details
           const el = document.querySelector('[data-framer-name="CTA"]') || document.querySelector('.framer-143896z') || document.querySelector('footer');
           if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } else {
-          // Home, logo, back-to-top or anything else scrolls to top
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       }, true);
+
+      // 3. Overlay Menu Accordion & Typography Setup
+      function setupOverlayMenu() {
+        const nav = document.querySelector('nav[data-framer-name*="Open"]');
+        if (!nav) return;
+
+        // Left side text: strictly 3 lines pure white
+        const statusP = nav.querySelector('.framer-n6q4up p, [data-framer-name="Status"] p');
+        if (statusP && statusP.dataset.lotusPatched !== 'true') {
+          statusP.innerHTML = 'Lotus Specialty Pharmacy<br>Dedicated clinical care and<br>personalized wellness.';
+          statusP.dataset.lotusPatched = 'true';
+        }
+
+        // Right side main menu accordion
+        const mainMenu = nav.querySelector('.framer-tkgwo7, [data-framer-name="Main Menu"]');
+        if (!mainMenu) return;
+
+        const sItem = mainMenu.querySelector('.framer-1km2yib');
+        const tItem = mainMenu.querySelector('.framer-1f1nyzy');
+
+        if (sItem && !document.getElementById('lotus-services-submenu')) {
+          const sMenu = document.createElement('div');
+          sMenu.className = 'lotus-submenu-container';
+          sMenu.id = 'lotus-services-submenu';
+
+          const services = [
+            { name: 'Free Home Delivery', target: 'services' },
+            { name: 'Medication Compounding', target: 'services' },
+            { name: 'Immunizations & Vaccines', target: 'services' },
+            { name: 'OTC Benefit Cards', target: 'services' },
+            { name: 'Clinical Consultation', target: 'services' }
+          ];
+
+          services.forEach(item => {
+            const link = document.createElement('a');
+            link.className = 'lotus-sub-item';
+            link.innerHTML = item.name + '<span class="bullet">→</span>';
+            link.href = '#' + item.target;
+            sMenu.appendChild(link);
+          });
+          sItem.insertAdjacentElement('afterend', sMenu);
+
+          sItem.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const isOpen = sMenu.classList.contains('is-open');
+            const tMenu = document.getElementById('lotus-transfer-submenu');
+            if (isOpen) {
+              sMenu.classList.remove('is-open');
+            } else {
+              sMenu.classList.add('is-open');
+              if (tMenu) tMenu.classList.remove('is-open');
+            }
+          });
+        }
+
+        if (tItem && !document.getElementById('lotus-transfer-submenu')) {
+          const tMenu = document.createElement('div');
+          tMenu.className = 'lotus-submenu-container';
+          tMenu.id = 'lotus-transfer-submenu';
+
+          const transfers = [
+            { name: 'Prescription Transfer', target: 'cta' },
+            { name: 'Refill Request', target: 'cta' },
+            { name: 'Auto-Refill Enrollment', target: 'cta' }
+          ];
+
+          transfers.forEach(item => {
+            const link = document.createElement('a');
+            link.className = 'lotus-sub-item';
+            link.innerHTML = item.name + '<span class="bullet">→</span>';
+            link.href = '#' + item.target;
+            tMenu.appendChild(link);
+          });
+          tItem.insertAdjacentElement('afterend', tMenu);
+
+          tItem.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const isOpen = tMenu.classList.contains('is-open');
+            const sMenu = document.getElementById('lotus-services-submenu');
+            if (isOpen) {
+              tMenu.classList.remove('is-open');
+            } else {
+              tMenu.classList.add('is-open');
+              if (sMenu) sMenu.classList.remove('is-open');
+            }
+          });
+        }
+
+        // Close submenus when other menu links are clicked
+        const otherItems = [
+          mainMenu.querySelector('.framer-1wnevsl'),
+          mainMenu.querySelector('.framer-1tehs81'),
+          mainMenu.querySelector('.framer-wnjfxb')
+        ];
+        otherItems.forEach(item => {
+          if (item && item.dataset.lotusListener !== 'true') {
+            item.dataset.lotusListener = 'true';
+            item.addEventListener('click', () => {
+              document.getElementById('lotus-services-submenu')?.classList.remove('is-open');
+              document.getElementById('lotus-transfer-submenu')?.classList.remove('is-open');
+            });
+          }
+        });
+      }
+
+      const navContainer = document.querySelector('.framer-1292qnm-container') || document.body;
+      const menuObserver = new MutationObserver(setupOverlayMenu);
+      menuObserver.observe(navContainer, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-framer-name', 'class'] });
+
+      setInterval(setupOverlayMenu, 400);
+      window.addEventListener('DOMContentLoaded', setupOverlayMenu);
+      window.addEventListener('load', setupOverlayMenu);
+      setupOverlayMenu();
     })();
   </script>
-
 </body>
 </html>
