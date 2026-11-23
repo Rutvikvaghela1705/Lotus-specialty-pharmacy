@@ -360,14 +360,18 @@
   
 
   <style id="lotus-footer-custom-styles">
-    /* 1. Resize Footer Logo so it is proportional and elegant */
-    .framer-7xjsec .framer-wgdccw {
-      max-width: 300px !important;
-      height: 75px !important;
-      margin: 0 auto !important;
-    }
+    /* 1. Footer Logo: Left-aligned inside container and slightly bigger */
     .framer-7xjsec {
-      padding: 24px 20px !important;
+      align-items: flex-start !important;
+      justify-content: flex-start !important;
+      justify-self: flex-start !important;
+      text-align: left !important;
+      padding: 32px 0px 24px 40px !important;
+    }
+    .framer-7xjsec .framer-wgdccw {
+      max-width: 440px !important;
+      height: 110px !important;
+      margin: 0 !important;
     }
 
     /* 2. Hide Timezone and Clock */
