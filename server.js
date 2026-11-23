@@ -74,26 +74,25 @@ function serveFileWithRange(req, res, filePath, contentType) {
 }
 
 function resolveFilePath(reqPath) {
-  // Check in ROOT_DIR first
-  let candidates = [
-    path.join(ROOT_DIR, reqPath),
-    path.join(PUBLIC_DIR, reqPath),
-    path.join(ROOT_DIR, reqPath, 'index.html'),
-    path.join(PUBLIC_DIR, reqPath, 'index.html'),
-    path.join(ROOT_DIR, reqPath + '.html'),
-    path.join(PUBLIC_DIR, reqPath + '.html')
-  ];
-
-  for (const c of candidates) {
-    if (fs.existsSync(c) && fs.statSync(c).isFile()) {
-      return c;
+  const ext = path.extname(reqPath).toLowerCase();
+  // Only serve static asset files if they have a non-html file extension
+  if (ext && ext !== '.html') {
+    const candidates = [
+      path.join(ROOT_DIR, reqPath),
+      path.join(PUBLIC_DIR, reqPath)
+    ];
+    for (const c of candidates) {
+      if (fs.existsSync(c) && fs.statSync(c).isFile()) {
+        return c;
+      }
     }
   }
-  return null;
+
+  // All page routes and html requests ALWAYS serve the single Home page index.html
+  return path.join(ROOT_DIR, 'index.html');
 }
 
 const server = http.createServer((req, res) => {
-
   const parsedUrl = url.parse(req.url);
   let pathname = decodeURIComponent(parsedUrl.pathname);
 
@@ -113,12 +112,12 @@ const server = http.createServer((req, res) => {
     return res.end('// framer events mock');
   }
 
-  // Find local file
+  // Find local file or fallback to Home page index.html
   const localFile = resolveFilePath(pathname);
 
-  if (localFile) {
+  if (localFile && fs.existsSync(localFile)) {
     const ext = path.extname(localFile).toLowerCase();
-    const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+    const contentType = MIME_TYPES[ext] || 'text/html; charset=utf-8';
 
     if (ext === '.mp4' || ext === '.webm' || ext === '.mp3') {
       return serveFileWithRange(req, res, localFile, contentType);
@@ -134,25 +133,18 @@ const server = http.createServer((req, res) => {
     return fs.createReadStream(localFile).pipe(res);
   }
 
-  // Fallback to index.html for root or SPA
+  // Fallback to Home page index.html
   const defaultIndex = path.join(ROOT_DIR, 'index.html');
-  if (fs.existsSync(defaultIndex)) {
-    res.writeHead(200, {
-      'Content-Type': 'text/html; charset=utf-8',
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
-      'Pragma': 'no-cache',
-      'Expires': '0'
-    });
-    return fs.createReadStream(defaultIndex).pipe(res);
-  }
-
-  res.writeHead(404, { 'Content-Type': 'text/plain' });
-  res.end('404 Not Found');
+  res.writeHead(200, {
+    'Content-Type': 'text/html; charset=utf-8',
+    'Cache-Control': 'no-cache, no-store, must-revalidate'
+  });
+  fs.createReadStream(defaultIndex).pipe(res);
 });
 
 server.listen(PORT, () => {
   console.log('==================================================');
-  console.log(`🚀 Arpeggio Live on http://localhost:${PORT}/`);
-  console.log(`📁 Serving directory: ${ROOT_DIR}`);
+  console.log(`🚀 Lotus Pharmacy Live on http://localhost:${PORT}/`);
+  console.log(`📁 Single-page Home App serving from: ${ROOT_DIR}`);
   console.log('==================================================');
 });
