@@ -1131,11 +1131,15 @@
 </style>
 
   <style id="lotus-instant-scroll-and-cursor">
-    /* 1. IMMEDIATELY ENABLE SCROLLING ON LOAD (REMOVES 2-SECOND DELAY) */
+    /* 1. IMMEDIATELY ENABLE SCROLLING ON LOAD (REMOVES 2-SECOND DELAY) & FULLSCREEN HERO */
     html, body {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
       overflow-x: hidden !important;
       overflow-y: auto !important;
-      scrollbar-gutter: stable;
+      background-color: #060907 !important;
     }
     .framer-1o6mh3i-container,
     [aria-label="Loading"] {
@@ -1144,6 +1148,25 @@
       visibility: hidden !important;
       opacity: 0 !important;
       z-index: -9999 !important;
+    }
+
+    /* FULLSCREEN HERO FIX: No white strip / gutter on the right */
+    [data-framer-name="Hero BG"],
+    .framer-1gyz3ud,
+    .framer-msleac-container,
+    [data-framer-name="Hero Content"],
+    .framer-o3hm0x {
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    [data-framer-name="Hero BG"] img,
+    .framer-1gyz3ud img,
+    .framer-msleac-container img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      object-position: center !important;
     }
 
     /* 2. ENSURE TOGGLE BUTTON IS ALWAYS CLICKABLE & SHOWS POINTER */
