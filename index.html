@@ -720,6 +720,24 @@
   }
 </style>
 
+
+<style id="hide-award-ticker">
+  .framer-pe8cnn,
+  [data-framer-name="Award Ticker"],
+  .framer-c8h2et-container,
+  .framer-ivkyjp-container {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none !important;
+  }
+</style>
+
 </head>
 <body>
 	<script async src="https://events.framer.com/script?v=2" data-fid="96c26319a4a1009ca4ffa0a29feaa041d71fb6b9b4feb70dc6cd916efbda8404" data-no-nt></script>
@@ -1026,6 +1044,13 @@ html.lenis body {
 
 <script>(function() { 
   function patchAchievements() {
+
+    // Remove / hide award ticker logo slider
+    sec.querySelectorAll('.framer-pe8cnn, [data-framer-name="Award Ticker"], .framer-ivkyjp-container').forEach(el => {
+      el.style.display = 'none';
+      el.remove();
+    });
+  
     const sec = document.getElementById('achievements') || document.querySelector('.framer-1q02ry2');
     if (!sec) return;
 
@@ -1042,7 +1067,7 @@ html.lenis body {
       { from: /Transforming industries, pixel by perfect pixel/g, to: 'Personalized care, custom compounding & free delivery dedicated to your health.' },
       { from: /BEST INTEGRATED CAMPAIGN 2024/g, to: 'PATIENT-CENTERED HEALTHCARE' },
       { from: /Boreal VR Campaign/g, to: 'Dedicated to Your Health & Wellbeing' },
-      { from: /Arpeggio is thrilled[^.<]+/g, to: 'At Lotus Specialty Pharmacy, we combine modern pharmaceutical precision with genuine community care' },
+      { from: /Arpeggio is thrilled[\s\S]*?Boreal/g, to: 'At Lotus Specialty Pharmacy, we combine modern pharmaceutical precision with genuine community care. From custom compounded medications to free doorstep delivery, we ensure you always receive optimal healthcare support.' },
       { from: /Customer Engagement/g, to: 'Patient Satisfaction' },
       { from: /35%/g, to: '100%' },
       { from: /REVENUE GROWTH/g, to: 'ACCURACY & CARE' },
