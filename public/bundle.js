@@ -26972,7 +26972,7 @@ Values:
 
   // arpeggio-assets/sites/EkfVtDpGRyOLbm2HsLyR4/siteMetadata.Zc7437CU.mjs
   function t5(e2, t13) {
-    return { description: `Arpeggio is a premium Framer template built to turn your portfolio into a client conversion tool. Designed for agencies and studios, it drives results through strategic layouts, clear storytelling, and slick design. Backed by lifetime support.`, favicon: `https://framerusercontent.com/assets/Mwzc2Po34qiA4goT7ToOIUy2oM.svg`, robots: `max-image-preview:large`, socialImage: `https://framerusercontent.com/assets/2ZAzenwmK1BGHzmSkbYRVwbwSI.jpg`, title: `Arpeggio Agency & Portfolio Template` };
+    return { description: `Arpeggio is a premium Framer template built to turn your portfolio into a client conversion tool. Designed for agencies and studios, it drives results through strategic layouts, clear storytelling, and slick design. Backed by lifetime support.`, favicon: `./assets/images/fav-icon.png`, robots: `max-image-preview:large`, socialImage: `https://framerusercontent.com/assets/2ZAzenwmK1BGHzmSkbYRVwbwSI.jpg`, title: `Arpeggio Agency & Portfolio Template` };
   }
   function n6() {
     return (n6 = t((() => {
