@@ -302,6 +302,23 @@
   }
 </style>
 
+
+<style id="hide-membership-section">
+  .framer-tk0kbw,
+  [data-framer-name="Membership"],
+  #pricing {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none !important;
+  }
+</style>
+
 </head>
 <body>
 	<script async src="https://events.framer.com/script?v=2" data-fid="96c26319a4a1009ca4ffa0a29feaa041d71fb6b9b4feb70dc6cd916efbda8404" data-no-nt></script>
@@ -573,6 +590,13 @@ html.lenis body {
  })();</script>
 <script>(function() { 
   function patchWhatWeDo() {
+
+    
+    // Remove / hide membership section
+    document.querySelectorAll('.framer-tk0kbw, [data-framer-name="Membership"], #pricing').forEach(el => {
+      el.style.display = 'none';
+      el.remove();
+    });
 
     // Remove / hide benefits section
     document.querySelectorAll('.framer-s6yh2b, [data-framer-name="Benefits"], #benefits').forEach(el => {
