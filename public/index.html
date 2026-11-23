@@ -319,6 +319,27 @@
   }
 </style>
 
+
+<style id="hide-journal-and-links">
+  .framer-1qh1yoo,
+  .framer-1361qha,
+  .framer-gjeq34-container,
+  .framer-1d7omnz,
+  [data-framer-name="Journal"],
+  [data-framer-name="Journals"],
+  #journal {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none !important;
+  }
+</style>
+
 </head>
 <body>
 	<script async src="https://events.framer.com/script?v=2" data-fid="96c26319a4a1009ca4ffa0a29feaa041d71fb6b9b4feb70dc6cd916efbda8404" data-no-nt></script>
@@ -704,6 +725,13 @@ html.lenis body {
   function patchWhatWeDo() {
 
     
+    
+    // Remove / hide Links strip and Journal section
+    document.querySelectorAll('.framer-1qh1yoo, .framer-1361qha, .framer-gjeq34-container, .framer-1d7omnz, [data-framer-name="Journal"], [data-framer-name="Journals"], #journal').forEach(el => {
+      el.style.display = 'none';
+      el.remove();
+    });
+
     // Remove / hide membership section
     document.querySelectorAll('.framer-tk0kbw, [data-framer-name="Membership"], #pricing').forEach(el => {
       el.style.display = 'none';
