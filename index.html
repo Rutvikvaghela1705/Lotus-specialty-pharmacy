@@ -812,19 +812,43 @@
   </style>
   
 
+  
   <style id="lotus-footer-custom-styles">
-    /* 1. Footer Logo: Left-aligned inside container and slightly bigger */
+    /* 1. Footer Logo: Pixel-perfect left alignment with Menu list & slightly bigger size */
     .framer-7xjsec {
       align-items: flex-start !important;
       justify-content: flex-start !important;
       justify-self: flex-start !important;
       text-align: left !important;
-      padding: 32px 0px 24px 40px !important;
+      padding: 36px 40px 20px 40px !important;
     }
+    @media (max-width: 1199.98px) {
+      .framer-7xjsec {
+        padding: 32px 32px 20px 32px !important;
+      }
+    }
+    @media (max-width: 809.98px) {
+      .framer-7xjsec {
+        padding: 24px 24px 16px 24px !important;
+      }
+    }
+
     .framer-7xjsec .framer-wgdccw {
-      max-width: 440px !important;
-      height: 110px !important;
+      max-width: 480px !important;
+      width: 100% !important;
+      height: 140px !important;
       margin: 0 !important;
+    }
+    @media (max-width: 809.98px) {
+      .framer-7xjsec .framer-wgdccw {
+        max-width: 360px !important;
+        height: 105px !important;
+      }
+    }
+
+    .framer-7xjsec .framer-wgdccw img {
+      object-position: left center !important;
+      object-fit: contain !important;
     }
 
     /* 2. Hide Timezone and Clock */
@@ -877,6 +901,7 @@
       overflow: hidden !important;
     }
   </style>
+  
   
 </head>
 <body>
